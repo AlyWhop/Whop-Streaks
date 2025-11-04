@@ -1,0 +1,5 @@
+{
+  "name": "Whop Streaks",
+  "description": "A gamified streak tracker to boost user engagement and retention. Users log daily actions to earn badges and rewards, competing on leaderboards. This application uses a dark, cosmic theme with vibrant gradients.",
+  "requestFramePermissions": []
+}

@@ -1,8 +1,10 @@
+
 import React, { useState } from 'react';
 import { triggerHaptic } from '../services/hapticService';
 import { __internal_execAsync } from '../services/whopService';
-import { CheckCircleIcon, LoaderIcon, MegaphoneIcon, ShieldCheckIcon, UsersIcon, TagIcon } from '../components/icons/Icons';
+import { CheckCircleIcon, LoaderIcon, MegaphoneIcon, ShieldCheckIcon, UsersIcon, TagIcon, LockClosedIcon } from '../components/icons/Icons';
 import { Confetti } from '../components/Confetti';
+import { Image } from '../components/Image';
 
 interface Reward {
   id: string;
@@ -95,8 +97,38 @@ const RewardCard: React.FC<RewardCardProps> = ({ reward, currentStreak, isRedeem
   );
 };
 
+const badgeMilestones = [
+  { requirement: 7, title: '7-Day Streak' },
+  { requirement: 14, title: '14-Day Milestone' },
+  { requirement: 30, title: '30-Day Legend' },
+  { requirement: 60, title: '60-Day Master' },
+  { requirement: 90, title: '90-Day Guru' },
+  { requirement: 180, title: 'Half-Year Hero' },
+  { requirement: 365, title: 'Yearly Titan' },
+  { requirement: 500, title: 'Cosmic Voyager' },
+];
 
-export const RewardsView: React.FC<{ currentStreak: number }> = ({ currentStreak }) => {
+const STREAK_MILESTONE_FOR_GEMINI_BADGE = 14;
+
+const MilestoneBadge: React.FC<{ title: string; imageUrl: string | null; unlocked: boolean }> = ({ title, imageUrl, unlocked }) => (
+  <div className="flex flex-col items-center space-y-2">
+    <div className={`w-20 h-20 rounded-xl flex items-center justify-center transition-all duration-300 ${unlocked ? 'bg-gradient-to-br from-purple-500 to-indigo-600 p-1' : 'bg-white/5 border border-white/10'}`}>
+      {unlocked && imageUrl ? (
+        <Image src={imageUrl} alt={title} className="w-full h-full rounded-lg" />
+      ) : (
+        <LockClosedIcon className="w-8 h-8 text-white/30" />
+      )}
+    </div>
+    <span className={`text-xs text-center ${unlocked ? 'text-white/80' : 'text-white/40'}`}>{title}</span>
+  </div>
+);
+
+interface RewardsViewProps {
+  currentStreak: number;
+  unlockedBadgeUrl: string | null;
+}
+
+export const RewardsView: React.FC<RewardsViewProps> = ({ currentStreak, unlockedBadgeUrl }) => {
   const [redeemedIds, setRedeemedIds] = useState<Set<string>>(new Set());
   const [redeemingId, setRedeemingId] = useState<string | null>(null);
   const [showConfetti, setShowConfetti] = useState(false);
@@ -126,7 +158,7 @@ export const RewardsView: React.FC<{ currentStreak: number }> = ({ currentStreak
   };
 
   return (
-    <div className="relative px-6">
+    <div className="relative px-6 pb-8">
       {showConfetti && <Confetti onComplete={() => setShowConfetti(false)} />}
       <h2 className="text-2xl font-bold text-white/90 tracking-wide text-center mb-6">Streak Rewards</h2>
       <div className="space-y-4">
@@ -140,6 +172,31 @@ export const RewardsView: React.FC<{ currentStreak: number }> = ({ currentStreak
             onRedeem={handleRedeem}
           />
         ))}
+      </div>
+      
+      <div className="mt-12">
+        <h2 className="text-2xl font-bold text-white/90 tracking-wide text-center mb-6">Milestone Badges</h2>
+        <div className="grid grid-cols-4 gap-4">
+          {badgeMilestones.map((badge) => {
+            const isUnlocked = currentStreak >= badge.requirement;
+            let imageUrl: string | null = null;
+            if (isUnlocked) {
+              if (badge.requirement === STREAK_MILESTONE_FOR_GEMINI_BADGE && unlockedBadgeUrl) {
+                imageUrl = unlockedBadgeUrl;
+              } else {
+                imageUrl = `https://picsum.photos/seed/badge-${badge.requirement}/200`;
+              }
+            }
+            return (
+              <MilestoneBadge
+                key={badge.requirement}
+                title={badge.title}
+                unlocked={isUnlocked}
+                imageUrl={imageUrl}
+              />
+            );
+          })}
+        </div>
       </div>
     </div>
   );

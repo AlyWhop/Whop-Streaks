@@ -183,7 +183,7 @@ export default function App() {
               />
             )}
             {currentView === 'leaderboard' && <LeaderboardView />}
-            {currentView === 'rewards' && <RewardsView currentStreak={streak} />}
+            {currentView === 'rewards' && <RewardsView currentStreak={streak} unlockedBadgeUrl={badgeUrl} />}
             {currentView === 'profile' && (
               <ProfileView
                 user={userProfile}

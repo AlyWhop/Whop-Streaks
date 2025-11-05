@@ -1,3 +1,4 @@
+
 {
   "name": "whop-streaks",
   "version": "1.0.0",
@@ -5,14 +6,14 @@
   "description": "A gamified streak tracker to boost user engagement and retention. Users log daily actions to earn badges and rewards, competing on leaderboards. This application uses a dark, cosmic theme with vibrant gradients.",
   "main": "index.tsx",
   "scripts": {
-    "start": "vite",
-    "build": "vite build",
-    "preview": "vite preview",
-    "dev": "vite",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "echo \"Start script is not applicable in this environment. Use your deployment platform's start command.\"",
+    "build": "echo \"Build script is not applicable in this environment. Use your deployment platform's build command.\"",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "echo \"To run this app, serve the project root directory with a static file server. For example: 'npx serve .' or 'python3 -m http.server'\""
   },
   "dependencies": {
     "@google/genai": "^1.28.0",
+    "@supabase/supabase-js": "^2.43.4",
     "react": "^19.2.0",
     "react-dom": "^19.2.0"
   },
@@ -20,9 +21,7 @@
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "tailwindcss": "^3.4.4",
-    "typescript": "^5.5.3",
-    "vite": "^5.4.8",
-    "@vitejs/plugin-react": "^4.3.1"
+    "typescript": "^5.5.3"
   },
   "keywords": [
     "react",
@@ -30,7 +29,8 @@
     "whop",
     "streaks",
     "gamification",
-    "gemini-api"
+    "gemini-api",
+    "supabase"
   ],
   "author": "",
   "license": "ISC"

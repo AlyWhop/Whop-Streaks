@@ -8,7 +8,7 @@ export default defineConfig({
     outDir: 'dist',
     assetsDir: 'assets',
     rollupOptions: {
-      input: 'index.html',  // Vite processes this, bundles ./index.tsx into assets
+      input: 'index.html',
       output: {
         entryFileNames: 'assets/index-[hash].js',
         chunkFileNames: 'assets/[name]-[hash].js',
@@ -16,7 +16,7 @@ export default defineConfig({
       }
     },
     resolve: {
-      alias: { '@': '.' }  // Maps imports to root for any ./
+      alias: { '.': './' }  // Locks root resolution
     }
   },
   server: { port: 3000 }

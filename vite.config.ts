@@ -3,19 +3,15 @@ import react from '@vitejs/plugin-react';
 
 export default defineConfig({
   plugins: [react()],
-  base: '/',  // Fixes asset paths for static hosts like Netlify
+  base: '/',  // Ensures /assets paths on Netlify
   build: {
-    outDir: 'dist',  // Matches your publish dir
-    assetsDir: 'assets',  // Bundles icons/CSS here
+    outDir: 'dist',
+    assetsDir: 'assets',
     rollupOptions: {
-      output: {
-        entryFileNames: 'assets/[name]-[hash].js',  // Your JS bundle
-        chunkFileNames: 'assets/[name]-[hash].js',
-        assetFileNames: 'assets/[name]-[hash].[ext]'
-      }
+      input: 'index.html'  // Key: Builds from index.html, injects scripts
     }
   },
   server: {
-    port: 3000  // Local dev port
+    port: 3000
   }
 });

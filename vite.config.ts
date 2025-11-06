@@ -8,17 +8,15 @@ export default defineConfig({
     outDir: 'dist',
     assetsDir: 'assets',
     rollupOptions: {
-      input: 'index.html',
+      input: 'index.html',  // Vite processes this, bundles ./index.tsx into assets
       output: {
         entryFileNames: 'assets/index-[hash].js',
         chunkFileNames: 'assets/[name]-[hash].js',
         assetFileNames: 'assets/[name]-[hash].[ext]'
       }
-    }
-  },
-  resolve: {
-    alias: {
-      '@': './'  // Alias for easier imports if needed
+    },
+    resolve: {
+      alias: { '@': '.' }  // Maps imports to root for any ./
     }
   },
   server: { port: 3000 }

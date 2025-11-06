@@ -28,13 +28,24 @@
       .progress-sheen-effect { position: absolute; top: 0; left: 0; width: 50%; height: 100%; background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.3) 50%, rgba(255, 255, 255, 0) 100%); animation: progress-sheen 2s ease-in-out infinite; }
       @keyframes progress-sheen-once { from { transform: translateX(-100%) skewX(-15deg); } to { transform: translateX(250%) skewX(-15deg); } }
       .progress-sheen-once-effect { position: absolute; top: 0; left: 0; width: 50%; height: 100%; background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.3) 50%, rgba(255, 255, 255, 0) 100%); animation: progress-sheen-once 0.8s ease-out; pointer-events: none; }
-      @keyframes special-streak-effect { 0% { transform: scale(1) rotate(-90deg); filter: drop-shadow(0 0 8px rgba(244, 114, 182, 0.7)) hue-rotate(0deg); opacity: 1; } 25% { transform: scale(1.05) rotate(-15deg); filter: drop-shadow(0 0 16px rgba(96, 165, 250, 0.9)) hue-rotate(90deg); } 50% { transform: scale(1) rotate(-90deg); filter: drop-shadow(0 0 8px rgba(251, 191, 36, 0.7)) hue-rotate(180deg); opacity: 0.8; } 75% { transform: scale(1.05) rotate(-90deg); filter: drop-shadow(0 0 16px rgba(192, 132, 252, 0.9)) hue-rotate(270deg); } 100% { transform: scale(1) rotate(-90deg); filter: drop-shadow(0 0 8px rgba(244, 114, 182, 0.7)) hue-rotate(360deg); opacity: 1; } }
+      @keyframes special-streak-effect { 0% { transform: scale(1) rotate(-90deg); filter: drop-shadow(0 0 8px rgba(244, 114, 182, 0.7)) hue-rotate(0deg); opacity: 1; } 25% { transform: scale(1.05) rotate(-90deg); filter: drop-shadow(0 0 16px rgba(96, 165, 250, 0.9)) hue-rotate(90deg); } 50% { transform: scale(1) rotate(-90deg); filter: drop-shadow(0 0 8px rgba(251, 191, 36, 0.7)) hue-rotate(180deg); opacity: 0.8; } 75% { transform: scale(1.05) rotate(-90deg); filter: drop-shadow(0 0 16px rgba(192, 132, 252, 0.9)) hue-rotate(270deg); } 100% { transform: scale(1) rotate(-90deg); filter: drop-shadow(0 0 8px rgba(244, 114, 182, 0.7)) hue-rotate(360deg); opacity: 1; } }
       .animate-special-streak { animation: special-streak-effect 4s infinite ease-in-out; }
     </style>
+    <script type="importmap">
+    {
+      "imports": {
+        "react/": "https://aistudiocdn.com/react@^19.2.0/",
+        "react": "https://aistudiocdn.com/react@^19.2.0",
+        "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+        "@google/genai": "https://aistudiocdn.com/@google/genai@^1.28.0",
+        "@supabase/supabase-js": "https://aistudiocdn.com/@supabase/supabase-js@^2.43.4"
+      }
+    }
+    </script>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
-   <script type="module" src="./src/index.tsx"></script>  <!-- Vite will replace with /assets/[hash].js on build -->
+    <script type="module" src="/index.tsx"></script>
   </body>
 </html>

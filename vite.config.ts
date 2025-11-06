@@ -8,11 +8,10 @@ export default defineConfig({
     outDir: 'dist',
     assetsDir: 'assets',
     rollupOptions: {
-      input: 'index.html',
-      output: {
-        entryFileNames: 'assets/index-[hash].js',
-        chunkFileNames: 'assets/[name]-[hash].js',
-        assetFileNames: 'assets/[name]-[hash].[ext]'
+  input: 'index.html',
+  external: [],
+  resolve: {
+    alias: { '@': '.' }  // Maps @ to root for any imports
       }
     }
   },

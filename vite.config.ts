@@ -8,8 +8,12 @@ export default defineConfig({
     outDir: 'dist',
     assetsDir: 'assets',
     rollupOptions: {
-      input: 'index.html',  // Vite processes this, swaps ./src/index.tsx to /assets/[hash].js
-      external: []  // Bundle everything—no externals for clean static
+      input: 'index.html',
+      output: {
+        entryFileNames: 'assets/index-[hash].js',
+        chunkFileNames: 'assets/[name]-[hash].js',
+        assetFileNames: 'assets/[name]-[hash].[ext]'
+      }
     }
   },
   server: { port: 3000 }

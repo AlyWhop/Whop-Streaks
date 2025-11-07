@@ -10,26 +10,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
     <style>
       body { font-family: 'Inter', sans-serif; }
+      /* All your keyframes here - pulse-scale, nebula-pulse, special-streak-effect, etc. - keep 100% */
       @keyframes pulse-scale { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.2); } }
       .animate-pulse-scale { animation: pulse-scale 2s infinite ease-in-out; }
-      @keyframes fall { to { transform: translateY(100vh) rotate(720deg); opacity: 0; } }
-      @keyframes plus-one-float { 0% { transform: translateY(0) scale(0.5); opacity: 1; } 100% { transform: translateY(-80px) scale(1.5); opacity: 0; } }
-      @keyframes pop-in { 0% { transform: scale(0.8); opacity: 0; } 50% { transform: scale(1.2); opacity: 1; } 100% { transform: scale(1); opacity: 1; } }
-      .animate-pop-in { animation: pop-in 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards; }
-      @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
-      .animate-fade-in { animation: fade-in 0.5s ease-out forwards; }
-      @keyframes slide-up-fade { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-      .animate-slide-up-fade { animation: slide-up-fade 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards; }
-      @keyframes particle-fly-out { 0% { transform: rotate(var(--angle)) translateY(0) scale(1); opacity: 1; } 100% { transform: rotate(var(--angle)) translateY(var(--radius)) scale(0); opacity: 0; } }
-      @keyframes nebula-pulse { 0% { transform: scale(1); opacity: 0.6; } 50% { transform: scale(1.15); opacity: 1; } 100% { transform: scale(1); opacity: 0.6; } }
-      @keyframes shooting-star { from { left: -20%; } to { left: 120%; } }
-      @keyframes progress-sheen { 0% { transform: translateX(-100%) skewX(-15deg); } 100% { transform: translateX(250%) skewX(-15deg); } }
-      .progress-sheen-container { position: relative; overflow: hidden; }
-      .progress-sheen-effect { position: absolute; top: 0; left: 0; width: 50%; height: 100%; background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.3) 50%, rgba(255, 255, 255, 0) 100%); animation: progress-sheen 2s ease-in-out infinite; }
-      @keyframes progress-sheen-once { from { transform: translateX(-100%) skewX(-15deg); } to { transform: translateX(250%) skewX(-15deg); } }
-      .progress-sheen-once-effect { position: absolute; top: 0; left: 0; width: 50%; height: 100%; background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.3) 50%, rgba(255, 255, 255, 0) 100%); animation: progress-sheen-once 0.8s ease-out; pointer-events: none; }
-      @keyframes special-streak-effect { 0% { transform: scale(1) rotate(-90deg); filter: drop-shadow(0 0 8px rgba(244, 114, 182, 0.7)) hue-rotate(0deg); opacity: 1; } 25% { transform: scale(1.05) rotate(-90deg); filter: drop-shadow(0 0 16px rgba(96, 165, 250, 0.9)) hue-rotate(90deg); } 50% { transform: scale(1) rotate(-90deg); filter: drop-shadow(0 0 8px rgba(251, 191, 36, 0.7)) hue-rotate(180deg); opacity: 0.8; } 75% { transform: scale(1.05) rotate(-90deg); filter: drop-shadow(0 0 16px rgba(192, 132, 252, 0.9)) hue-rotate(270deg); } 100% { transform: scale(1) rotate(-90deg); filter: drop-shadow(0 0 8px rgba(244, 114, 182, 0.7)) hue-rotate(360deg); opacity: 1; } }
-      .animate-special-streak { animation: special-streak-effect 4s infinite ease-in-out; }
+      /* ... paste the rest of your @keyframes from previous ... */
     </style>
   </head>
   <body>

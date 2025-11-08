@@ -19,9 +19,9 @@
 
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
 
-// --- CONFIG ---
-const SUPABASE_URL = process.env.SUPABASE_URL;
-const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY;
+// --- CONFIG (VITE COMPATIBLE) ---
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
+const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY;
 const USER_ID_KEY = 'whop_streaks_user_id';
 const PROFILES_TABLE = 'profiles';
 

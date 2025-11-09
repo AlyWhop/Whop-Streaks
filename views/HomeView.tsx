@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import { StreakCircle } from '../components/StreakCircle';
 import { StreakButton } from '../components/StreakButton';
@@ -109,9 +110,16 @@ export const HomeView: React.FC<HomeViewProps> = ({ streak, progress, dailyGoal,
         </div>
         <div className="w-full bg-slate-800/50 rounded-full h-2.5 border border-slate-700 overflow-hidden">
             <div 
-                className={`h-full rounded-full transition-all duration-500 ${isGoalComplete ? 'bg-green-400' : 'bg-gradient-to-r from-pink-500 to-sky-500'}`}
+                className={`relative overflow-hidden h-full rounded-full transition-all duration-500 ${isGoalComplete ? 'bg-green-400' : 'bg-gradient-to-r from-pink-500 to-sky-500'}`}
                 style={{ width: `${dailyProgressPercent}%`, boxShadow: '0 0 10px var(--glow-sky)'}}
-            />
+            >
+              {playSheen && (
+                <div
+                  className="absolute top-0 left-0 w-1/2 h-full bg-white/30"
+                  style={{ animation: 'progress-sheen 0.8s ease-in-out forwards' }}
+                />
+              )}
+            </div>
         </div>
       </div>
       

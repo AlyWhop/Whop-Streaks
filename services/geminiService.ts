@@ -1,6 +1,8 @@
 import { GoogleGenAI, Modality } from "@google/genai";
 
-const API_KEY = process.env.API_KEY;
+const API_KEY =
+  (typeof process !== "undefined" && process.env.API_KEY) ||
+  (typeof import.meta !== "undefined" && (import.meta as any).env?.VITE_GEMINI_API_KEY);
 
 if (!API_KEY) {
   // In a real app, you might want to handle this more gracefully.
@@ -8,7 +10,7 @@ if (!API_KEY) {
   console.warn("API_KEY environment variable not set. Gemini API calls will fail.");
 }
 
-const ai = new GoogleGenAI({ apiKey: API_KEY });
+const ai = new GoogleGenAI({ apiKey: API_KEY! });
 
 export const generateBadgeImage = async (streak: number): Promise<string> => {
   if (!API_KEY) {

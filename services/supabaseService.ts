@@ -21,8 +21,14 @@ import { createClient, SupabaseClient } from '@supabase/supabase-js';
 
 // --- CONFIG ---
 // Safely access environment variables to prevent crashes in browser environments
-const SUPABASE_URL = (typeof process !== 'undefined' && process.env.SUPABASE_URL) ? process.env.SUPABASE_URL : undefined;
-const SUPABASE_ANON_KEY = (typeof process !== 'undefined' && process.env.SUPABASE_ANON_KEY) ? process.env.SUPABASE_ANON_KEY : undefined;
+const SUPABASE_URL =
+  (typeof process !== "undefined" && process.env.SUPABASE_URL) ||
+  (typeof import.meta !== "undefined" && (import.meta as any).env?.VITE_SUPABASE_URL);
+
+const SUPABASE_ANON_KEY =
+  (typeof process !== "undefined" && process.env.SUPABASE_ANON_KEY) ||
+  (typeof import.meta !== "undefined" && (import.meta as any).env?.VITE_SUPABASE_ANON_KEY);
+
 
 const USER_ID_KEY = 'whop_streaks_user_id';
 const PROFILES_TABLE = 'profiles';

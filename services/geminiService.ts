@@ -4,6 +4,8 @@ const API_KEY =
   (typeof process !== "undefined" && process.env.API_KEY) ||
   (typeof import.meta !== "undefined" && (import.meta as any).env?.VITE_GEMINI_API_KEY);
 
+ console.log("🔐 Gemini Key Exists:", !!API_KEY);
+
 if (!API_KEY) {
   // In a real app, you might want to handle this more gracefully.
   // For this environment, we'll throw an error if the key is missing.

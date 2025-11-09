@@ -15,16 +15,13 @@ interface HomeViewProps {
   onNavigateToLeaderboard: () => void;
 }
 
-const particleColors = ['bg-pink-400', 'bg-cyan-400', 'bg-purple-400', 'bg-yellow-300'];
-
 export const HomeView: React.FC<HomeViewProps> = ({ streak, progress, dailyGoal, dailyProgress, logDailyActivity, onNavigateToLeaderboard }) => {
   const [showPlusOne, setShowPlusOne] = useState(false);
   const prevStreakRef = useRef(streak);
-  const [isLoggingActivity, setIsLoggingActivity] = useState(false);
-  const [isSharing, setIsSharing] = useState(false);
   const [showLogConfirmation, setShowLogConfirmation] = useState(false);
   const [playSheen, setPlaySheen] = useState(false);
   const prevDailyProgress = useRef(dailyProgress);
+  const [showShine, setShowShine] = useState(false);
 
   const isGoalComplete = dailyProgress >= dailyGoal;
   const dailyProgressPercent = Math.min((dailyProgress / dailyGoal) * 100, 100);
@@ -32,10 +29,7 @@ export const HomeView: React.FC<HomeViewProps> = ({ streak, progress, dailyGoal,
   useEffect(() => {
     if (streak > prevStreakRef.current) {
       setShowPlusOne(true);
-      const timer = setTimeout(() => {
-        setShowPlusOne(false);
-      }, 1000);
-      
+      const timer = setTimeout(() => setShowPlusOne(false), 1000);
       return () => clearTimeout(timer);
     }
     prevStreakRef.current = streak;
@@ -44,63 +38,30 @@ export const HomeView: React.FC<HomeViewProps> = ({ streak, progress, dailyGoal,
   useEffect(() => {
     if (dailyProgress > prevDailyProgress.current) {
       setPlaySheen(true);
-      const timer = setTimeout(() => {
-        setPlaySheen(false);
-      }, 800); // Duration of the animation
+      const timer = setTimeout(() => setPlaySheen(false), 800);
       prevDailyProgress.current = dailyProgress;
       return () => clearTimeout(timer);
     } else if (dailyProgress < prevDailyProgress.current) {
-      // Handle reset case if any, for now just update ref
       prevDailyProgress.current = dailyProgress;
     }
   }, [dailyProgress]);
 
   const handleLogActivity = () => {
-    if (isLoggingActivity || isGoalComplete || showLogConfirmation) return;
+    if (isGoalComplete || showLogConfirmation) return;
 
     logDailyActivity();
-    setIsLoggingActivity(true);
-
-    setTimeout(() => {
-      setIsLoggingActivity(false);
-      setShowLogConfirmation(true);
-      setTimeout(() => {
-        setShowLogConfirmation(false);
-      }, 1500); // Confirmation message visible for 1.5s
-    }, 600); // Duration of particle animation
-  };
-
-  const handleShare = async () => {
-    if (isSharing) return;
-
-    setIsSharing(true);
-    const shareText = `🔥 I'm on a ${streak}-day streak in my community! Keeping the fire alive on Whop. #WhopStreaks #Consistency`;
+    setShowShine(true);
     
-    try {
-      if (navigator.share) {
-        await navigator.share({
-          title: 'My Whop Streak!',
-          text: shareText,
-        });
-        playSound('uiClick');
-        triggerHaptic('success');
-      } else {
-        await navigator.clipboard.writeText(shareText);
-        alert('Share text copied to clipboard!');
-        playSound('uiClick');
-        triggerHaptic('impactLight');
-      }
-    } catch (error) {
-      if ((error as DOMException)?.name !== 'AbortError') {
-        console.error('Share or copy failed:', error);
-        if (!navigator.share) {
-            alert('Failed to copy share text.');
-            triggerHaptic('error');
-        }
-      }
-    } finally {
-      setIsSharing(false);
-    }
+    // Show confirmation message
+    setShowLogConfirmation(true);
+    setTimeout(() => {
+        setShowLogConfirmation(false);
+    }, 1500); // Confirmation message visible for 1.5s
+    
+    // Reset shine animation
+    setTimeout(() => {
+        setShowShine(false);
+    }, 1000);
   };
 
   const buttonContent = isGoalComplete ? (
@@ -113,67 +74,50 @@ export const HomeView: React.FC<HomeViewProps> = ({ streak, progress, dailyGoal,
   ) : (
     "Log Today's Activity"
   );
-
-  const buttonDisabled = isLoggingActivity || isGoalComplete || showLogConfirmation;
   
-  const buttonClassName = `relative z-10 px-6 py-2 rounded-full text-sm font-semibold transition-all duration-300 disabled:opacity-70 disabled:cursor-not-allowed ${
-    isGoalComplete || showLogConfirmation ? 'bg-green-500' : 'bg-indigo-500 hover:bg-indigo-400'
+  const buttonClassName = `relative z-10 w-full max-w-[200px] overflow-hidden px-6 py-3 rounded-full text-base font-semibold transition-all duration-300 disabled:opacity-70 disabled:cursor-not-allowed shadow-lg 
+    ${ isGoalComplete || showLogConfirmation ? 'bg-green-500 shadow-green-500/20' : 'bg-gradient-to-r from-pink-500 to-sky-500 shadow-sky-500/30 hover:shadow-sky-500/50 hover:brightness-110 active:scale-95'
   }`;
 
   return (
-    <div className="relative flex-grow flex flex-col items-center justify-start pt-2 space-y-6 px-6 -mt-6">
-      <div className="group absolute top-4 right-6">
-        <button
-          onClick={handleShare}
-          aria-label="Share your streak"
-          disabled={isSharing}
-          className="p-3 bg-white/10 rounded-full hover:bg-white/20 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-          <ShareIcon className="w-5 h-5 text-white/80" />
-        </button>
-        <div className="absolute top-full mt-2 right-0 bg-gray-900 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-20">
-          Share Streak
-        </div>
-      </div>
-      
+    <div className="flex-grow flex flex-col items-center justify-start pt-2 space-y-6 px-6">
       <h1 
-        className="text-4xl font-black text-center tracking-wider text-transparent bg-clip-text bg-gradient-to-b from-white to-gray-300 animate-fade-in" 
-        style={{ textShadow: '0 2px 10px rgba(192, 132, 252, 0.5)', animationDelay: '100ms' }}
+        className="text-4xl font-black text-center tracking-wide text-transparent bg-clip-text bg-gradient-to-b from-white to-slate-300 animate-fade-in" 
+        style={{ textShadow: '0 3px 15px var(--glow-purple)', animationDelay: '100ms' }}
       >
         Whop Streaks
       </h1>
 
-      <div className="relative">
+      <div className="relative my-4">
         <StreakCircle progress={progress} streakCount={streak} />
         {showPlusOne && (
           <span 
             className="absolute top-1/4 left-1/2 -translate-x-1/2 text-5xl font-black text-transparent bg-clip-text bg-gradient-to-br from-amber-300 to-yellow-400 pointer-events-none"
-            style={{ animation: 'plus-one-float 1s ease-out forwards' }}
+            style={{ animation: 'plus-one-float 1s ease-out forwards', filter: 'drop-shadow(0 0 10px #fbbF24)' }}
           >
             +1
           </span>
         )}
       </div>
 
-      <div className="w-full max-w-xs text-center">
+      <div className="w-full max-w-xs text-center space-y-4">
         <div className="flex items-center justify-center space-x-2">
           <h3 className="text-base font-medium text-white/80">
             Today's Goal: {dailyProgress} / {dailyGoal}
           </h3>
           {isGoalComplete && <CheckCircleIcon key={dailyProgress} className="w-5 h-5 text-green-400 animate-pop-in" />}
         </div>
-        <div className="mt-2 w-full bg-white/10 rounded-full h-2 progress-sheen-container">
+        <div className="w-full bg-slate-800/50 rounded-full h-2.5 border border-slate-700 overflow-hidden">
             <div 
-                className={`h-full rounded-full transition-all duration-500 ${isGoalComplete ? 'bg-green-400' : 'bg-gradient-to-r from-pink-500 to-blue-500'}`}
-                style={{ width: `${dailyProgressPercent}%`}}
+                className={`h-full rounded-full transition-all duration-500 ${isGoalComplete ? 'bg-green-400' : 'bg-gradient-to-r from-pink-500 to-sky-500'}`}
+                style={{ width: `${dailyProgressPercent}%`, boxShadow: '0 0 10px var(--glow-sky)'}}
             />
-            {playSheen && <div className="progress-sheen-once-effect" />}
         </div>
       </div>
       
-      <div className="w-full space-y-4 pt-4">
-        <StreakButton text="App Leader Streak" icon={<UserIcon />} />
-        <StreakButton text="Flame Layer Tweak" icon={<AdjustmentsHorizontalIcon />} />
+      <div className="w-full space-y-3 pt-4">
+        <StreakButton text="App Leader Streak" icon={<UserIcon className="w-6 h-6"/>} />
+        <StreakButton text="Flame Layer Tweak" icon={<AdjustmentsHorizontalIcon className="w-6 h-6"/>} />
       </div>
 
       <div className='pt-2 w-full'>
@@ -181,30 +125,14 @@ export const HomeView: React.FC<HomeViewProps> = ({ streak, progress, dailyGoal,
       </div>
 
       <div className='pt-2'>
-        <div className="relative inline-block">
           <button 
             onClick={handleLogActivity} 
-            disabled={buttonDisabled} 
+            disabled={isGoalComplete || showLogConfirmation}
             className={buttonClassName}
           >
             {buttonContent}
+            {showShine && <div className="button-shine-effect" />}
           </button>
-          {isLoggingActivity && (
-            <div className="absolute inset-0 pointer-events-none">
-              {Array.from({ length: 20 }).map((_, i) => (
-                <div
-                  key={i}
-                  className={`absolute top-1/2 left-1/2 w-1.5 h-1.5 ${particleColors[i % 4]} rounded-full`}
-                  style={{
-                    animation: `particle-fly-out 600ms ease-out forwards`,
-                    '--angle': `${(i / 20) * 360}deg`,
-                    '--radius': `${40 + Math.random() * 30}px`,
-                  } as React.CSSProperties}
-                />
-              ))}
-            </div>
-          )}
-        </div>
       </div>
     </div>
   );

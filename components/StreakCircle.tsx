@@ -1,64 +1,84 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 interface StreakCircleProps {
   progress: number;
   streakCount: number;
 }
 
-const shootingStars = [
-  { top: '20%', duration: '5s', delay: '0s' },
-  { top: '50%', duration: '4s', delay: '1.5s' },
-  { top: '80%', duration: '6s', delay: '3s' },
-];
-
 export const StreakCircle: React.FC<StreakCircleProps> = ({ progress, streakCount }) => {
   const radius = 90;
-  const strokeWidth = 20;
+  const strokeWidth = 14;
   const innerRadius = radius - strokeWidth / 2;
   const circumference = 2 * Math.PI * innerRadius;
   const offset = circumference - (progress / 100) * circumference;
 
-  // Pulse gets faster as progress increases (from 8s down to 3s duration)
-  const pulseDuration = Math.max(3, 8 - (progress / 100) * 5);
-  const isSpecialStreak = streakCount === 12;
+  const [number, setNumber] = useState(streakCount);
+  const [animationClass, setAnimationClass] = useState('animate-pop-in');
+  const prevStreakCountRef = useRef(streakCount);
 
+  useEffect(() => {
+    if (streakCount > prevStreakCountRef.current) {
+      // Number change animation
+      setAnimationClass('animate-scale-up-fade-out');
+      const numberTimer = setTimeout(() => {
+        setNumber(streakCount);
+        setAnimationClass('animate-scale-up-fade-in');
+      }, 400); // exit animation duration
+      
+      prevStreakCountRef.current = streakCount;
+
+      return () => {
+        clearTimeout(numberTimer);
+      };
+    } else if (streakCount < prevStreakCountRef.current) {
+      // Handle streak reset
+      setNumber(streakCount);
+      setAnimationClass('animate-pop-in');
+      prevStreakCountRef.current = streakCount;
+    }
+  }, [streakCount]);
+  
   return (
-    <div className="relative w-56 h-56">
-      {/* Background Cosmic Effects */}
+    <div className="relative w-64 h-64 flex items-center justify-center">
+      {/* Background Glow */}
+      <div className="absolute inset-0 bg-gradient-to-br from-purple-600/30 to-sky-500/30 rounded-full blur-2xl animate-pulse-scale" />
+
+      {/* Glass Container */}
+      <div className="absolute w-[240px] h-[240px] rounded-full bg-slate-900/40 backdrop-blur-xl border border-slate-700/80 shadow-2xl shadow-black/40" />
+      
+      {/* Inner Neon Rim */}
+      <div className="absolute w-[210px] h-[210px] rounded-full border border-sky-400/30"
+          style={{ boxShadow: 'inset 0 0 12px 0px var(--glow-sky)' }}
+      />
+      
+      {/* Shooting Stars */}
       <div className="absolute inset-0 rounded-full overflow-hidden">
-        {/* Pulsing Nebula */}
         <div
-          className="absolute inset-[-20px] bg-gradient-to-br from-purple-900/80 via-pink-500/50 to-blue-800/80 rounded-full blur-2xl"
-          style={{
-            animation: `nebula-pulse ${pulseDuration}s infinite ease-in-out`,
-          }}
+          className="absolute top-1/4 left-0 h-px w-16 bg-gradient-to-r from-white/70 to-transparent"
+          style={{ animation: `shooting-star 4s linear infinite 1s` }}
         />
-        {/* Shooting Stars */}
-        {shootingStars.map((star, i) => (
-          <div
-            key={i}
-            className="absolute h-0.5 w-8 bg-gradient-to-r from-white/80 to-transparent rounded-full"
-            style={{
-              top: star.top,
-              animation: `shooting-star ${star.duration} linear infinite`,
-              animationDelay: star.delay,
-              transform: 'rotate(-30deg)',
-            }}
-          />
-        ))}
+        <div
+          className="absolute top-2/3 left-0 h-px w-10 bg-gradient-to-r from-white/50 to-transparent"
+          style={{ animation: `shooting-star 6s linear infinite 3s` }}
+        />
       </div>
 
       <svg 
-        className={`relative w-full h-full transform -rotate-90 ${isSpecialStreak ? 'animate-special-streak' : ''}`} 
+        className="relative w-full h-full transform -rotate-90"
         viewBox="0 0 200 200"
-        style={{ willChange: 'filter, transform' }}
       >
         <defs>
           <linearGradient id="streakGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#F472B6" />
-            <stop offset="50%" stopColor="#FBBF24" />
-            <stop offset="100%" stopColor="#60A5FA" />
+            <stop offset="0%" stopColor="#ec4899" />
+            <stop offset="100%" stopColor="#0ea5e9" />
           </linearGradient>
+          <filter id="glow">
+            <feGaussianBlur stdDeviation="2" result="coloredBlur" />
+            <feMerge>
+              <feMergeNode in="coloredBlur" />
+              <feMergeNode in="SourceGraphic" />
+            </feMerge>
+          </filter>
         </defs>
         
         {/* Background circle */}
@@ -66,7 +86,7 @@ export const StreakCircle: React.FC<StreakCircleProps> = ({ progress, streakCoun
           cx="100"
           cy="100"
           r={innerRadius}
-          stroke="rgba(255, 255, 255, 0.1)"
+          stroke="rgba(255, 255, 255, 0.05)"
           strokeWidth={strokeWidth}
           fill="transparent"
         />
@@ -82,19 +102,20 @@ export const StreakCircle: React.FC<StreakCircleProps> = ({ progress, streakCoun
           strokeLinecap="round"
           strokeDasharray={circumference}
           strokeDashoffset={offset}
-          style={{ transition: 'stroke-dashoffset 1s cubic-bezier(0.65, 0, 0.35, 1)' }}
+          style={{ 
+            transition: 'stroke-dashoffset 1s cubic-bezier(0.65, 0, 0.35, 1)',
+            filter: 'url(#glow)',
+          }}
         />
       </svg>
-      <div className="absolute inset-0 flex flex-col items-center justify-center">
+      <div className="absolute inset-0 flex flex-col items-center justify-center" style={{ textShadow: '0 2px 20px rgba(0,0,0,0.5)'}}>
         <span 
-          key={streakCount}
-          className="text-7xl font-black text-white animate-pop-in"
+          className={`text-7xl font-black text-white ${animationClass}`}
         >
-          {streakCount}
+          {number}
         </span>
-        <span className="text-lg font-medium text-white/80 tracking-wider">Day Streak</span>
+        <span className="text-lg font-medium text-white/70 tracking-wider -mt-1">Day Streak</span>
       </div>
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[190px] h-[190px] rounded-full bg-black/20 blur-xl"></div>
     </div>
   );
 };

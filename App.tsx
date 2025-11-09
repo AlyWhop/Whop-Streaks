@@ -35,7 +35,6 @@ export default function App() {
   const [showAvatarModal, setShowAvatarModal] = useState(false);
   const [showImageEditorModal, setShowImageEditorModal] = useState(false);
 
-  // FIX: Initialize userProfile with all properties from UserProfileData to prevent type errors.
   const [userProfile, setUserProfile] = useState<UserProfileData>({
     name: 'User',
     avatarUrl: null,
@@ -52,7 +51,6 @@ export default function App() {
     const loadInitialData = async () => {
         const profile = await getUserProfile();
         if (profile) {
-            // FIX: Pass the full profile object to setUserProfile to match the UserProfileData type.
             setUserProfile(profile);
             setStreak(profile.streak);
             setMaxStreak(profile.maxStreak);
@@ -146,32 +144,35 @@ export default function App() {
 
   if (isAppLoading) {
     return (
-        <main className="bg-[#0C0114] flex justify-center items-center min-h-screen font-sans">
-            <div className="relative w-full max-w-[420px] h-[880px] bg-black overflow-hidden rounded-[40px] shadow-2xl shadow-purple-900/50 border-4 border-gray-800 flex flex-col justify-center items-center text-white">
-                <SparklesIcon className="w-16 h-16 text-purple-400 animate-pulse mb-6" />
+        <main className="bg-[#02000A] flex justify-center items-center min-h-screen font-sans">
+            <div className="relative w-full max-w-[420px] h-[880px] bg-[#02000A] overflow-hidden rounded-[40px] shadow-2xl shadow-purple-900/50 border-2 border-slate-800 flex flex-col justify-center items-center text-white">
+                <div className="absolute inset-0 bg-grid-slate-900/50 [mask-image:linear-gradient(0deg,#000000,rgba(0,0,0,0))]"></div>
+                <SparklesIcon className="w-16 h-16 text-purple-400 animate-pulse-scale mb-6" />
                 <h2 className="text-xl font-bold">Loading Your Cosmic Journey...</h2>
+                <div className="absolute bottom-0 left-0 right-0 h-1/2 bg-gradient-to-t from-[#02000A] to-transparent" />
             </div>
         </main>
     )
   }
 
   return (
-    <main className="bg-[#0C0114] flex justify-center items-center min-h-screen font-sans">
-      <div className="relative w-full max-w-[420px] h-[880px] bg-black overflow-hidden rounded-[40px] shadow-2xl shadow-purple-900/50 border-4 border-gray-800">
+    <main className="bg-[#02000A] flex justify-center items-center min-h-screen font-sans">
+      <div className="relative w-full max-w-[420px] h-[880px] bg-black overflow-hidden rounded-[40px] shadow-2xl shadow-purple-900/50 border-2 border-slate-800">
         <div 
-          className="absolute inset-0 bg-[#0C0114] z-0"
+          className="absolute inset-0 bg-[#02000A] z-0"
           style={{
             backgroundImage: `
-              radial-gradient(ellipse 100% 60% at 50% 120%, rgba(128, 0, 128, 0.4), transparent),
-              radial-gradient(ellipse 80% 50% at 20% -10%, rgba(0, 128, 255, 0.3), transparent),
-              radial-gradient(ellipse 80% 50% at 80% -10%, rgba(255, 0, 128, 0.3), transparent)
+              radial-gradient(ellipse 80% 50% at 50% -20%, rgba(120, 113, 198, 0.3), transparent),
+              radial-gradient(ellipse 80% 50% at 20% -10%, rgba(59, 130, 246, 0.2), transparent),
+              radial-gradient(ellipse 80% 50% at 80% -10%, rgba(219, 39, 119, 0.2), transparent)
             `
           }}
         />
+        <div className="absolute top-0 left-0 w-full h-full bg-grid-slate-900/30 [mask-image:linear-gradient(0deg,rgba(0,0,0,0),#000000)]"></div>
 
         <div className="relative z-10 h-full flex flex-col text-white">
           <Header />
-          <div className="flex-grow pt-40 pb-24 overflow-y-auto">
+          <div className="flex-grow pt-32 pb-24 overflow-y-auto">
             {currentView === 'home' && (
               <HomeView
                 streak={streak}
@@ -182,7 +183,7 @@ export default function App() {
                 onNavigateToLeaderboard={() => navigateTo('leaderboard')}
               />
             )}
-            {currentView === 'leaderboard' && <LeaderboardView />}
+            {currentView === 'leaderboard' && <LeaderboardView userProfile={userProfile} />}
             {currentView === 'rewards' && <RewardsView currentStreak={streak} unlockedBadgeUrl={badgeUrl} />}
             {currentView === 'profile' && (
               <ProfileView
@@ -201,11 +202,11 @@ export default function App() {
         </div>
 
         { (isLoading || badgeUrl || error) && (
-          <div className="absolute inset-0 bg-black/70 backdrop-blur-md z-20 flex justify-center items-center p-6">
-            <div className="bg-white/10 border border-white/20 rounded-2xl p-8 text-center flex flex-col items-center">
+          <div className="absolute inset-0 bg-black/70 backdrop-blur-md z-20 flex justify-center items-center p-6 animate-fade-in">
+            <div className="bg-slate-900/60 border border-slate-700/80 backdrop-blur-xl rounded-2xl p-8 text-center flex flex-col items-center animate-slide-up-fade shadow-2xl shadow-black/40">
               {isLoading && (
                 <>
-                  <SparklesIcon className="w-12 h-12 text-purple-400 animate-pulse mb-4" />
+                  <SparklesIcon className="w-12 h-12 text-purple-400 animate-pulse-scale mb-4" />
                   <h3 className="text-xl font-bold mb-2">Generating Your Badge!</h3>
                   <p className="text-white/70">The cosmos is aligning to create your reward...</p>
                 </>
@@ -218,10 +219,15 @@ export default function App() {
               )}
               {badgeUrl && !isLoading && (
                  <>
-                  <h3 className="text-2xl font-bold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-cyan-400">Streak Milestone Unlocked!</h3>
+                  <h3 className="text-2xl font-bold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-sky-400">Streak Milestone Unlocked!</h3>
                   <p className="text-white/80 mb-6">You've earned a special badge for your {streak}-day streak!</p>
                   <Image src={badgeUrl} alt="Generated Badge" className="rounded-lg w-64 h-64 border-2 border-purple-500 shadow-lg shadow-purple-500/50" />
-                  <button onClick={() => setBadgeUrl(null)} className="mt-8 px-6 py-2 bg-purple-600 rounded-full font-semibold hover:bg-purple-500 transition-colors">Awesome!</button>
+                  <button 
+                    onClick={() => setBadgeUrl(null)} 
+                    className="mt-8 px-8 py-3 bg-gradient-to-r from-pink-500 to-sky-500 rounded-full font-semibold text-white shadow-lg shadow-sky-500/20 hover:brightness-125 hover:shadow-sky-500/40 transition-all duration-300 transform hover:-translate-y-1"
+                  >
+                    Awesome!
+                  </button>
                  </>
               )}
             </div>

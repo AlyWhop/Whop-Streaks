@@ -1,5 +1,5 @@
 import React from 'react';
-import { WhopBrandLogoIcon, TrophyIcon, StarIcon, UserIcon, CustomBrushIcon } from './icons/Icons';
+import { WhopBrandLogoIcon, TrophyIcon, StarIcon, UserIcon, BrushIcon } from './icons/Icons';
 import type { View } from '../App';
 
 interface NavItemProps {
@@ -12,18 +12,23 @@ interface NavItemProps {
 const NavItem: React.FC<NavItemProps> = ({ icon, label, active, onClick }) => {
   return (
     <div className="relative flex justify-center group">
-      <button onClick={onClick} className={`flex flex-col items-center space-y-1 w-16 transition-all duration-300 ${active ? 'text-white scale-110' : 'text-gray-400 hover:text-white'}`}>
-        {icon}
-        <span className="text-xs font-medium transition-all duration-300 [text-shadow:0_0_10px_rgba(134,239,172,0)] group-hover:text-green-300 group-hover:[text-shadow:0_0_10px_rgba(134,239,172,0.8)]">{label}</span>
-      </button>
-      {/* Tooltip */}
-      <div 
-        role="tooltip"
-        className="absolute bottom-full mb-2 px-3 py-1.5 bg-gray-800 text-white text-xs font-semibold rounded-md shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none whitespace-nowrap z-10"
+      <button 
+        onClick={onClick} 
+        className={`relative flex flex-col items-center space-y-1 w-16 transition-all duration-300 ${active ? 'text-white' : 'text-slate-400 hover:text-white'}`}
+        style={{ transform: active ? 'translateY(-4px)' : 'translateY(0)' }}
       >
-        {label}
-        <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-gray-800 rotate-45"></div>
-      </div>
+        <div className="relative">
+          {active && <div className="absolute -inset-2 bg-sky-400/20 rounded-full blur-md" />}
+          {icon}
+        </div>
+        <span className="text-xs font-medium">{label}</span>
+      </button>
+      {active && (
+        <div 
+          className="absolute -bottom-2.5 h-1 w-8 bg-sky-400 rounded-full transition-all duration-300"
+          style={{ boxShadow: '0 0 8px 0 var(--glow-sky)' }}
+        />
+      )}
     </div>
   );
 };
@@ -35,7 +40,8 @@ interface BottomNavProps {
 
 export const BottomNav: React.FC<BottomNavProps> = ({ currentView, navigateTo }) => {
   return (
-    <nav className="absolute bottom-0 left-0 right-0 h-24 bg-black/30 backdrop-blur-lg border-t border-white/10 rounded-t-[30px]">
+    <nav className="absolute bottom-0 left-0 right-0 h-24 bg-slate-900/40 backdrop-blur-xl border-t border-slate-700/80 rounded-t-[30px]">
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-sky-400/50 to-transparent" />
       <div className="flex justify-around items-center h-full px-2">
         <NavItem 
           icon={<WhopBrandLogoIcon className="w-10 h-5" />} 
@@ -62,7 +68,7 @@ export const BottomNav: React.FC<BottomNavProps> = ({ currentView, navigateTo })
           onClick={() => navigateTo('profile')}
         />
         <NavItem
-          icon={<CustomBrushIcon className="w-7 h-7" />}
+          icon={<BrushIcon className="w-7 h-7" />}
           label="Designs"
           active={currentView === 'designs'}
           onClick={() => navigateTo('designs')}

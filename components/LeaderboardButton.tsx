@@ -14,7 +14,7 @@ export const LeaderboardButton: React.FC<LeaderboardButtonProps> = ({ onClick })
   return (
     <button
       onClick={handleClick}
-      className="w-full py-4 rounded-full bg-gradient-to-r from-pink-500 to-blue-500 text-white font-bold text-lg shadow-lg shadow-purple-500/30 hover:shadow-xl hover:shadow-purple-500/50 transform hover:-translate-y-1 transition-all duration-300"
+      className="w-full py-4 rounded-full bg-gradient-to-r from-pink-500 to-sky-500 text-white font-bold text-lg shadow-lg shadow-sky-500/20 transform-gpu transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-sky-500/40 hover:brightness-110 active:scale-95"
     >
       Leaderboard
     </button>

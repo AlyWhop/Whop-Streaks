@@ -14,10 +14,6 @@ const suggestedPrompts = [
     "An astronaut meditating in a field of stars",
     "A cyberpunk fox with neon circuit patterns",
     "A crystal wolf howling at a galaxy",
-    "Ethereal space whale swimming through a starfield",
-    "A wise owl with galaxies for eyes",
-    "Glowing jellyfish floating in the void of space",
-    "Celestial knight with constellation armor",
 ];
 
 const randomAdjectives = ["Cosmic", "Galactic", "Starlight", "Nebula", "Cyberpunk", "Ethereal", "Glowing", "Crystalline", "Astral"];
@@ -66,27 +62,23 @@ export const AvatarCustomizationModal: React.FC<AvatarCustomizationModalProps> =
     }
   };
 
-  const handleSuggestionClick = (suggestion: string) => {
-    setPrompt(suggestion);
-  };
-
   return (
     <div className="absolute inset-0 bg-black/70 backdrop-blur-md z-30 flex justify-center items-center p-4 animate-fade-in">
-      <div className="bg-white/10 border border-white/20 rounded-2xl p-6 text-center flex flex-col items-center w-full max-w-md animate-slide-up-fade">
-        <h3 className="text-2xl font-bold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-cyan-400">Create Your Avatar</h3>
+      <div className="bg-slate-900/60 border border-slate-700/80 backdrop-blur-xl rounded-2xl p-6 text-center flex flex-col items-center w-full max-w-md animate-slide-up-fade shadow-2xl shadow-black/40">
+        <h3 className="text-2xl font-bold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-sky-400">Create Your Avatar</h3>
         
-        {isLoading ? (
-            <div className="w-64 h-64 bg-white/5 rounded-lg flex flex-col items-center justify-center my-4">
-                <SparklesIcon className="w-12 h-12 text-purple-400 animate-pulse mb-4" />
-                <p className="text-white/70">Conjuring your cosmic self...</p>
-            </div>
-        ) : generatedImage ? (
-            <Image src={generatedImage} alt="Generated Avatar" className="rounded-lg w-64 h-64 border-2 border-purple-500 shadow-lg shadow-purple-500/50 my-4" />
-        ) : (
-            <div className="w-64 h-64 bg-white/5 rounded-lg flex items-center justify-center my-4 p-4">
+        <div className="w-64 h-64 bg-slate-800/50 border border-slate-700 rounded-lg flex items-center justify-center my-4 p-4 shadow-inner shadow-black/30">
+            {isLoading ? (
+                <div className="flex flex-col items-center justify-center text-center">
+                    <SparklesIcon className="w-12 h-12 text-purple-400 animate-pulse-scale mb-4" />
+                    <p className="text-white/70">Conjuring your cosmic self...</p>
+                </div>
+            ) : generatedImage ? (
+                <Image src={generatedImage} alt="Generated Avatar" className="rounded-lg w-full h-full border-2 border-purple-500 shadow-lg shadow-purple-500/50" />
+            ) : (
                 <p className="text-white/50">Your generated avatar will appear here.</p>
-            </div>
-        )}
+            )}
+        </div>
 
         {error && <p className="text-red-400 text-sm mb-4">{error}</p>}
         
@@ -94,23 +86,23 @@ export const AvatarCustomizationModal: React.FC<AvatarCustomizationModalProps> =
             value={prompt}
             onChange={(e) => setPrompt(e.target.value)}
             placeholder="e.g., An astronaut riding a Shiba Inu through the cosmos"
-            className="w-full h-20 p-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all"
+            className="w-full h-20 p-3 bg-slate-800/50 border border-slate-700 rounded-lg text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all"
             disabled={isLoading}
         />
 
-        <div className="flex flex-wrap justify-center gap-2 my-3 text-xs">
+        <div className="flex flex-wrap justify-center gap-2 my-4 text-xs">
             {suggestedPrompts.map(p => (
-                 <button key={p} onClick={() => handleSuggestionClick(p)} className="px-2 py-1 bg-white/10 rounded-full hover:bg-white/20 transition-colors disabled:opacity-50" disabled={isLoading}>
+                 <button key={p} onClick={() => setPrompt(p)} className="px-3 py-1 bg-slate-700/70 rounded-full hover:bg-slate-700 transition-colors disabled:opacity-50" disabled={isLoading}>
                     {p}
                 </button>
             ))}
         </div>
         
-        <div className="flex w-full items-center space-x-2 mt-2">
+        <div className="flex w-full items-center space-x-2">
             <button 
                 onClick={() => handleGenerate(prompt)} 
                 disabled={isLoading || !prompt}
-                className="flex-grow py-3 rounded-full bg-purple-600 font-bold text-white shadow-lg shadow-purple-500/30 hover:shadow-xl hover:shadow-purple-500/50 transform hover:-translate-y-1 transition-all duration-300 disabled:bg-purple-600/50 disabled:shadow-none disabled:transform-none flex items-center justify-center"
+                className="flex-grow py-3 rounded-full bg-gradient-to-r from-pink-500 to-sky-500 text-white font-bold shadow-lg shadow-sky-500/20 transform-gpu transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-sky-500/40 hover:brightness-110 active:scale-95 disabled:bg-gradient-to-r disabled:from-pink-500/50 disabled:to-sky-500/50 disabled:shadow-none disabled:transform-none flex items-center justify-center"
             >
                 {isLoading ? <LoaderIcon className="w-6 h-6 animate-spin" /> : <><SparklesIcon className="w-5 h-5 mr-2"/>Generate</>}
             </button>
@@ -125,7 +117,7 @@ export const AvatarCustomizationModal: React.FC<AvatarCustomizationModalProps> =
         </div>
 
         <div className="flex w-full space-x-4 mt-4">
-            <button onClick={onClose} className="w-1/2 py-2 rounded-full bg-white/10 text-white/80 font-semibold hover:bg-white/20 transition-colors">Cancel</button>
+            <button onClick={onClose} className="w-1/2 py-2 rounded-full bg-slate-700/70 text-white/80 font-semibold hover:bg-slate-700 transition-colors">Cancel</button>
             <button 
                 onClick={handleSave} 
                 disabled={!generatedImage} 

@@ -1,4 +1,5 @@
 
+
 import React, { useState } from 'react';
 import { triggerHaptic } from '../services/hapticService';
 import { __internal_execAsync } from '../services/whopService';
@@ -55,22 +56,22 @@ const RewardCard: React.FC<RewardCardProps> = ({ reward, currentStreak, isRedeem
   };
 
   const buttonClasses = `
-    mt-4 w-full py-2 px-4 rounded-full font-semibold text-sm transition-all duration-300 flex items-center justify-center
+    mt-4 w-full py-2.5 px-4 rounded-full font-semibold text-base transition-all duration-300 flex items-center justify-center
     ${isRedeemed ? 'bg-green-500/30 text-green-300 cursor-default' : ''}
-    ${!isRedeemed && isUnlocked ? 'bg-purple-600 hover:bg-purple-500 text-white shadow-lg shadow-purple-500/30' : ''}
-    ${!isRedeemed && !isUnlocked ? 'bg-gray-500/20 text-gray-400 cursor-not-allowed' : ''}
+    ${!isRedeemed && isUnlocked ? 'bg-gradient-to-r from-pink-500 to-sky-500 text-white shadow-lg shadow-sky-500/20 hover:brightness-110 hover:shadow-sky-500/40 transform hover:-translate-y-0.5' : ''}
+    ${!isRedeemed && !isUnlocked ? 'bg-slate-700/50 text-slate-400 cursor-not-allowed' : ''}
   `;
   
   const cardClasses = `
-    bg-white/5 border border-white/10 rounded-2xl p-4 backdrop-blur-sm shadow-lg transition-all duration-300
-    ${isUnlocked && !isRedeemed ? 'border-purple-500/50 shadow-purple-500/20' : ''}
+    bg-slate-800/50 backdrop-blur-lg border border-slate-700/80 rounded-2xl p-4 shadow-lg shadow-black/20 transition-all duration-300
+    ${isUnlocked && !isRedeemed ? 'border-purple-500/50 shadow-purple-500/10' : ''}
   `;
 
   return (
     <div className={cardClasses}>
       <div className="flex items-start">
-        <div className={`w-10 h-10 rounded-full flex items-center justify-center mr-4 transition-colors duration-300 ${isUnlocked ? 'bg-gradient-to-br from-purple-500 to-indigo-600' : 'bg-white/10'}`}>
-          <RewardIcon className={`w-6 h-6 transition-colors duration-300 ${isUnlocked ? 'text-white' : 'text-white/50'}`} />
+        <div className={`w-10 h-10 rounded-xl flex items-center justify-center mr-4 transition-colors duration-300 ${isUnlocked ? 'bg-gradient-to-br from-purple-500 to-sky-600 shadow-lg shadow-sky-500/20' : 'bg-slate-700/50'}`}>
+          <RewardIcon className={`w-6 h-6 transition-colors duration-300 ${isUnlocked ? 'text-white' : 'text-slate-400'}`} />
         </div>
         <div className="flex-grow">
           <h3 className="font-bold text-white/90">{reward.title}</h3>
@@ -78,12 +79,11 @@ const RewardCard: React.FC<RewardCardProps> = ({ reward, currentStreak, isRedeem
         </div>
       </div>
       <div className="mt-4">
-        <div className="w-full bg-white/10 rounded-full h-2.5 progress-sheen-container">
+        <div className="w-full bg-slate-700/50 rounded-full h-2.5">
           <div 
-            className="bg-gradient-to-r from-pink-500 to-blue-500 h-full rounded-full transition-all duration-500" 
-            style={{ width: `${progress}%` }}
+            className="bg-gradient-to-r from-pink-500 to-sky-500 h-full rounded-full transition-all duration-500" 
+            style={{ width: `${progress}%`, boxShadow: '0 0 10px var(--glow-sky)' }}
           ></div>
-           {isUnlocked && <div className="progress-sheen-effect"></div>}
         </div>
       </div>
       <button 
@@ -112,11 +112,12 @@ const STREAK_MILESTONE_FOR_GEMINI_BADGE = 14;
 
 const MilestoneBadge: React.FC<{ title: string; imageUrl: string | null; unlocked: boolean }> = ({ title, imageUrl, unlocked }) => (
   <div className="flex flex-col items-center space-y-2">
-    <div className={`w-20 h-20 rounded-xl flex items-center justify-center transition-all duration-300 ${unlocked ? 'bg-gradient-to-br from-purple-500 to-indigo-600 p-1' : 'bg-white/5 border border-white/10'}`}>
+    <div className={`relative w-20 h-20 rounded-xl flex items-center justify-center transition-all duration-300 ${unlocked ? 'bg-gradient-to-br from-purple-500 to-indigo-600 p-0.5' : 'bg-slate-800/50 border border-slate-700'}`}>
+      {unlocked && <div className="absolute -inset-1 blur-lg bg-purple-500/30 animate-subtle-pulse rounded-xl" />}
       {unlocked && imageUrl ? (
-        <Image src={imageUrl} alt={title} className="w-full h-full rounded-lg" />
+        <Image src={imageUrl} alt={title} className="w-full h-full rounded-[10px]" />
       ) : (
-        <LockClosedIcon className="w-8 h-8 text-white/30" />
+        <LockClosedIcon className="w-8 h-8 text-slate-500" />
       )}
     </div>
     <span className={`text-xs text-center ${unlocked ? 'text-white/80' : 'text-white/40'}`}>{title}</span>
@@ -146,12 +147,10 @@ export const RewardsView: React.FC<RewardsViewProps> = ({ currentStreak, unlocke
         setRedeemedIds(prev => new Set(prev).add(reward.id));
       } else {
         triggerHaptic('error');
-        // Optionally, show an error message to the user
       }
     } catch (error) {
       triggerHaptic('error');
       console.error("Redemption failed:", error);
-      // Optionally, show an error message to the user
     } finally {
       setRedeemingId(null);
     }
@@ -160,7 +159,7 @@ export const RewardsView: React.FC<RewardsViewProps> = ({ currentStreak, unlocke
   return (
     <div className="relative px-6 pb-8">
       {showConfetti && <Confetti onComplete={() => setShowConfetti(false)} />}
-      <h2 className="text-2xl font-bold text-white/90 tracking-wide text-center mb-6">Streak Rewards</h2>
+      <h2 className="text-3xl font-black text-center mb-6 text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-sky-400">Streak Rewards</h2>
       <div className="space-y-4">
         {rewardsData.map(reward => (
           <RewardCard
@@ -174,8 +173,8 @@ export const RewardsView: React.FC<RewardsViewProps> = ({ currentStreak, unlocke
         ))}
       </div>
       
-      <div className="mt-12">
-        <h2 className="text-2xl font-bold text-white/90 tracking-wide text-center mb-6">Milestone Badges</h2>
+      <div className="my-12">
+        <h2 className="text-3xl font-black text-center mb-6 text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-sky-400">Milestone Badges</h2>
         <div className="grid grid-cols-4 gap-4">
           {badgeMilestones.map((badge) => {
             const isUnlocked = currentStreak >= badge.requirement;

@@ -19,9 +19,11 @@
 
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
 
-// --- CONFIG (VITE COMPATIBLE) ---
-const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
-const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY;
+// --- CONFIG ---
+// Safely access environment variables to prevent crashes in browser environments
+const SUPABASE_URL = (typeof process !== 'undefined' && process.env.SUPABASE_URL) ? process.env.SUPABASE_URL : undefined;
+const SUPABASE_ANON_KEY = (typeof process !== 'undefined' && process.env.SUPABASE_ANON_KEY) ? process.env.SUPABASE_ANON_KEY : undefined;
+
 const USER_ID_KEY = 'whop_streaks_user_id';
 const PROFILES_TABLE = 'profiles';
 
@@ -41,6 +43,18 @@ export interface LeaderboardEntry {
   streak: number;
   avatar: string | null;
 }
+
+// Mock data for fallback when Supabase is not configured
+const MOCK_LEADERBOARD: LeaderboardEntry[] = [
+    { rank: 1, name: 'Orion', streak: 365, avatar: 'https://picsum.photos/seed/Orion/150' },
+    { rank: 2, name: 'Celeste', streak: 350, avatar: 'https://picsum.photos/seed/Celeste/150' },
+    { rank: 3, name: 'Nova', streak: 333, avatar: 'https://picsum.photos/seed/Nova/150' },
+    { rank: 4, name: 'Sirius', streak: 298, avatar: 'https://picsum.photos/seed/Sirius/150' },
+    { rank: 5, name: 'Luna', streak: 251, avatar: 'https://picsum.photos/seed/Luna/150' },
+    { rank: 6, name: 'Cosmo', streak: 220, avatar: 'https://picsum.photos/seed/Cosmo/150' },
+    { rank: 7, name: 'Astra', streak: 199, avatar: 'https://picsum.photos/seed/Astra/150' },
+    { rank: 8, name: 'Sol', streak: 180, avatar: 'https://picsum.photos/seed/Sol/150' },
+];
 
 // --- CLIENT INITIALIZATION ---
 let supabase: SupabaseClient | null = null;
@@ -114,7 +128,7 @@ const createNewUserProfile = async (): Promise<{id: string, profile: UserProfile
 export const getUserProfile = async (): Promise<UserProfileData> => {
     if (!supabase) {
         // Fallback to a default object if supabase is not configured
-        return { name: 'Guest', avatarUrl: null, streak: 0, maxStreak: 0, dailyProgress: 0, totalActivities: 0 };
+        return { name: 'Guest', avatarUrl: 'https://picsum.photos/seed/guest/150', streak: 23, maxStreak: 42, dailyProgress: 1, totalActivities: 101 };
     }
     
     let userId = getLocalUserId();
@@ -183,9 +197,14 @@ export const updateUserProfile = async (updates: Partial<UserProfileData>): Prom
 
 /**
  * Fetches the leaderboard data from Supabase.
+ * Returns mock data if Supabase is not configured.
  */
 export const getLeaderboard = async (): Promise<LeaderboardEntry[]> => {
-    if (!supabase) return [];
+    if (!supabase) {
+        // Return mock data after a short delay to simulate network
+        await new Promise(resolve => setTimeout(resolve, 500));
+        return MOCK_LEADERBOARD;
+    }
 
     const { data, error } = await supabase
         .from(PROFILES_TABLE)
@@ -204,4 +223,41 @@ export const getLeaderboard = async (): Promise<LeaderboardEntry[]> => {
         streak: profile.streak,
         avatar: profile.avatar_url,
     }));
+};
+
+
+/**
+ * Gets the current user's rank. In a real app, this would involve a more
+ * complex query. Here we mock it for demonstration.
+ * Returns a mock rank if Supabase is not configured.
+ */
+export const getCurrentUserRank = async (user: UserProfileData): Promise<LeaderboardEntry> => {
+    if (!supabase) {
+      // Return a mock object for the current user's rank
+      return {
+        rank: 42,
+        name: user.name,
+        streak: user.streak,
+        avatar: user.avatarUrl,
+      };
+    }
+
+    // This is a simplified implementation for a real backend.
+    // A more performant way would be a dedicated RPC function in Supabase.
+    const { count, error } = await supabase
+        .from(PROFILES_TABLE)
+        .select('*', { count: 'exact', head: true })
+        .gt('streak', user.streak);
+    
+    if (error) {
+        console.error("Error fetching user rank:", error);
+        throw error;
+    }
+
+    return {
+        rank: (count ?? 0) + 1,
+        name: user.name,
+        streak: user.streak,
+        avatar: user.avatarUrl,
+    };
 };

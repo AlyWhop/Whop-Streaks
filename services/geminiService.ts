@@ -1,11 +1,11 @@
 import { GoogleGenAI, Modality } from "@google/genai";
 
-const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
+const API_KEY = process.env.API_KEY;
 
 if (!API_KEY) {
   // In a real app, you might want to handle this more gracefully.
   // For this environment, we'll throw an error if the key is missing.
-  console.warn("GEMINI_API_KEY environment variable not set. Gemini API calls will fail.");
+  console.warn("API_KEY environment variable not set. Gemini API calls will fail.");
 }
 
 const ai = new GoogleGenAI({ apiKey: API_KEY });

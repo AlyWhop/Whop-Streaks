@@ -1,8 +1,7 @@
 import { GoogleGenAI, Modality } from "@google/genai";
 
-const API_KEY =
-  (typeof process !== "undefined" && process.env.API_KEY) ||
-  (typeof import.meta !== "undefined" && (import.meta as any).env?.VITE_GEMINI_API_KEY);
+// FIX: Per coding guidelines, API key must be obtained exclusively from process.env.API_KEY.
+const API_KEY = process.env.API_KEY;
 
 if (!API_KEY) {
   // In a real app, you might want to handle this more gracefully.

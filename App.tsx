@@ -9,7 +9,7 @@ import { ProfileView } from './views/ProfileView';
 import { DesignsView } from './views/DesignsView';
 import { AvatarCustomizationModal } from './components/AvatarCustomizationModal';
 import { ImageEditorModal } from './components/ImageEditorModal';
-import { OnboardingView } from './components/OnboardingView';
+import { OnboardingView } from './views/OnboardingView';
 import { SparklesIcon } from './components/icons/Icons';
 import { generateBadgeImage } from './services/geminiService';
 import { triggerHaptic } from './services/hapticService';

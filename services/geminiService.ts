@@ -134,3 +134,47 @@ export const editImage = async (imageUrl: string, prompt: string): Promise<strin
     return imageUrl;
   }
 };
+
+export const generateOnboardingIllustrations = async (): Promise<(string | null)[]> => {
+    const prompts = [
+      "A beautiful, abstract welcome icon. A glowing cosmic doorway opening, with nebula and stars, in a vibrant purple and cyan gradient. Digital art, minimalist, centered on a dark background.",
+      "A stylized icon of a fiery comet hitting a bullseye target in space. Represents tracking daily streaks. Glowing orange and pink streaks against a dark cosmic background. Minimalist, digital art, centered.",
+      "A minimalist icon of a glowing, ethereal mountain peak or podium made of crystal, with three stars of different brightness (gold, silver, bronze) above it, representing a leaderboard. Cosmic background, purple and blue hues, centered.",
+      "An icon of a glowing, ornate, cosmic treasure chest opening to reveal a shining gem. Represents rewards and achievements. Gold and purple glowing light, dark space background, minimalist, centered."
+    ];
+  
+    if (!API_KEY) {
+      console.warn("API key not set, using placeholder for onboarding illustrations.");
+      return prompts.map(p => `https://picsum.photos/seed/${p.substring(0, 10)}/200`);
+    }
+  
+    try {
+      const imagePromises = prompts.map(prompt => 
+        ai.models.generateContent({
+          model: 'gemini-2.5-flash-image',
+          contents: { parts: [{ text: prompt }] },
+          config: {
+            responseModalities: [Modality.IMAGE],
+          },
+        })
+      );
+  
+      const responses = await Promise.all(imagePromises);
+  
+      const imageUrls = responses.map(response => {
+        for (const part of response.candidates[0].content.parts) {
+          if (part.inlineData) {
+            return `data:${part.inlineData.mimeType};base64,${part.inlineData.data}`;
+          }
+        }
+        return null; // Fallback for a single failed generation
+      });
+  
+      // Check if any failed, and if so, use a placeholder for that one
+      return imageUrls.map((url, index) => url ?? `https://picsum.photos/seed/${prompts[index].substring(0, 10)}/200`);
+  
+    } catch (error) {
+      console.error("Error generating onboarding illustrations with Gemini:", error);
+      return prompts.map(p => `https://picsum.photos/seed/${p.substring(0, 10)}/200`);
+    }
+  };

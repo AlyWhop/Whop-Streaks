@@ -1,5 +1,5 @@
 import React from 'react';
-import { WhopBrandLogoIcon, TrophyIcon, StarIcon, UserIcon, BrushIcon } from './icons/Icons';
+import { NewCompanyLogoIcon, TrophyIcon, StarIcon, UserIcon, BrushIcon } from './icons/Icons';
 import type { View } from '../App';
 
 interface NavItemProps {
@@ -17,7 +17,7 @@ const NavItem: React.FC<NavItemProps> = ({ icon, label, active, onClick }) => {
         className={`relative flex flex-col items-center space-y-1 w-16 transition-all duration-300 ${active ? 'text-white' : 'text-slate-400 hover:text-white'}`}
         style={{ transform: active ? 'translateY(-4px)' : 'translateY(0)' }}
       >
-        <div className="relative">
+        <div className="relative flex items-center justify-center h-7">
           {active && <div className="absolute -inset-2 bg-sky-400/20 rounded-full blur-md" />}
           {icon}
         </div>
@@ -44,7 +44,7 @@ export const BottomNav: React.FC<BottomNavProps> = ({ currentView, navigateTo })
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-sky-400/50 to-transparent" />
       <div className="flex justify-around items-center h-full px-2">
         <NavItem 
-          icon={<WhopBrandLogoIcon className="w-10 h-5" />} 
+          icon={<NewCompanyLogoIcon className="w-12 h-7" />} 
           label="Whop" 
           active={currentView === 'home'}
           onClick={() => navigateTo('home')}

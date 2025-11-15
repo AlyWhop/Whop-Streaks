@@ -2,9 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { triggerHaptic } from '../services/hapticService';
 import { DemoLogButton } from '../components/DemoLogButton';
 import { RewardPreviewCard } from '../components/RewardPreviewCard';
-import { generateOnboardingIllustrations } from '../services/geminiService';
-import { SparklesIcon } from '../components/icons/Icons';
-import { Image } from '../components/Image';
+import { WelcomeIllustration, StreakIllustration, LeaderboardIllustration, RewardsIllustration } from '../components/icons/OnboardingIllustrations';
 
 interface OnboardingViewProps {
   onComplete: () => void;
@@ -31,22 +29,17 @@ const onboardingSteps = [
   },
 ];
 
+const onboardingIllustrations = [
+    <WelcomeIllustration key="welcome" className="w-40 h-40 animate-pop-in" />,
+    <StreakIllustration key="streak" className="w-40 h-40 animate-pop-in" />,
+    <LeaderboardIllustration key="leaderboard" className="w-40 h-40 animate-pop-in" />,
+    <RewardsIllustration key="rewards" className="w-40 h-40 animate-pop-in" />,
+];
+
 export const OnboardingView: React.FC<OnboardingViewProps> = ({ onComplete }) => {
   const [currentStep, setCurrentStep] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
-  const [illustrationUrls, setIllustrationUrls] = useState<(string | null)[]>(Array(onboardingSteps.length).fill(null));
-  const [isLoadingIllustrations, setIsLoadingIllustrations] = useState(true);
-
-  useEffect(() => {
-    const generateImages = async () => {
-      setIsLoadingIllustrations(true);
-      const urls = await generateOnboardingIllustrations();
-      setIllustrationUrls(urls);
-      setIsLoadingIllustrations(false);
-    };
-    generateImages();
-  }, []);
-
+  
   useEffect(() => {
     if (currentStep === 1) {
       const timer = setTimeout(() => setIsAnimating(true), 500);
@@ -79,16 +72,7 @@ export const OnboardingView: React.FC<OnboardingViewProps> = ({ onComplete }) =>
       <div className="bg-white/10 border border-white/20 rounded-2xl p-8 text-center flex flex-col items-center w-full max-w-sm animate-slide-up-fade">
         
         <div className="mb-6 h-40 w-40 flex items-center justify-center">
-          {isLoadingIllustrations ? (
-            <SparklesIcon className="w-20 h-20 text-purple-400 animate-pulse-scale" />
-          ) : (
-            <Image
-              key={currentStep}
-              src={illustrationUrls[currentStep]}
-              alt={stepData.title}
-              className="w-40 h-40 animate-pop-in rounded-lg"
-            />
-          )}
+            {onboardingIllustrations[currentStep]}
         </div>
 
         {/* TITLE */}

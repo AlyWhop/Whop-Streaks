@@ -127,6 +127,12 @@ export const WhopBrandLogoIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props
     </svg>
 );
 
+export const NewCompanyLogoIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
+    <svg viewBox="0 0 556 350" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
+        <path fill="#FA4616" d="M201.721 117.811c-14.791 0-24.987 6.49-32.703 13.829 0 0-3.116 2.953-3.076 3.043l32.405 32.405 32.4-32.405c-6.136-8.447-17.704-16.872-29.026-16.872Zm80.009.004c-14.791 0-24.987 6.49-32.704 13.83 0 0-2.845 2.873-2.975 3.042l-40.054 40.06 32.355 32.354 72.403-72.414c-6.136-8.447-17.698-16.872-29.025-16.872Zm80.245-.004c-14.791 0-24.988 6.49-32.704 13.829 0 0-2.963 2.897-3.076 3.043l-80.125 80.136 8.481 8.481c13.121 13.121 34.599 13.121 47.72 0l88.628-88.617H391c-6.136-8.447-17.699-16.872-29.025-16.872Z"/>
+    </svg>
+);
+
 export const ShuffleIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" {...props}>
     <path strokeLinecap="round" strokeLinejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 11.667 0l3.181-3.183m-4.991-2.491v4.992a2.25 2.25 0 0 1-2.25 2.25h-4.992a2.25 2.25 0 0 1-2.25-2.25v-4.992m0 0-3.181-3.183A8.25 8.25 0 0 1 4.89 6.25l3.181-3.183m4.991 2.491h4.992a2.25 2.25 0 0 0 2.25-2.25v-4.992a2.25 2.25 0 0 0-2.25-2.25h-4.992a2.25 2.25 0 0 0-2.25 2.25v4.992a2.25 2.25 0 0 0 2.25 2.25Z" />
@@ -156,94 +162,6 @@ export const TagIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" {...props}>
         <path strokeLinecap="round" strokeLinejoin="round" d="M9.568 3H5.25A2.25 2.25 0 0 0 3 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 0 0 5.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 0 0 9.568 3Z" />
         <path strokeLinecap="round" strokeLinejoin="round" d="M6 6h.008v.008H6V6Z" />
-    </svg>
-);
-
-export const OnboardingIllustrationIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
-    <svg viewBox="0 0 160 160" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
-        <defs>
-            <linearGradient id="magicGradient" x1="0" y1="0" x2="1" y2="1">
-                <stop stopColor="#7C3AED"/>
-                <stop offset="1" stopColor="#3B82F6"/>
-            </linearGradient>
-            <radialGradient id="softBlob" cx="50%" cy="50%" r="50%">
-                <stop stopColor="#7C3AED" stopOpacity="0.6"/>
-                <stop offset="1" stopColor="#3B82F6" stopOpacity="0"/>
-            </radialGradient>
-            <linearGradient id="glassFill" x1="0" y1="0" x2="1" y2="1">
-                <stop stopColor="white" stopOpacity="0.15"/>
-                <stop offset="1" stopColor="white" stopOpacity="0.05"/>
-            </linearGradient>
-            <filter id="sparkleGlow" x="-50%" y="-50%" width="200%" height="200%">
-                <feGaussianBlur stdDeviation="1.5" result="coloredBlur"/>
-                <feMerge>
-                    <feMergeNode in="coloredBlur"/>
-                    <feMergeNode in="SourceGraphic"/>
-                </feMerge>
-            </filter>
-        </defs>
-        <circle cx="40" cy="45" r="50" fill="url(#softBlob)" filter="blur(20px)" />
-        <circle cx="120" cy="110" r="60" fill="url(#softBlob)" filter="blur(25px)" transform="rotate(45 120 110)" />
-        <g transform="rotate(-15 80 80)">
-            <rect x="30" y="30" width="100" height="100" rx="20" fill="url(#glassFill)" stroke="rgba(255, 255, 255, 0.2)" strokeWidth="1.5"/>
-            <path d="M30 50 Q 80 25, 130 50 L 130 30 L 30 30 Z" fill="rgba(255, 255, 255, 0.1)"/>
-            <rect x="55" y="55" width="50" height="50" rx="10" fill="url(#magicGradient)" opacity="0.8" style={{filter: 'blur(2px)'}}/>
-            <rect x="55" y="55" width="50" height="50" rx="10" fill="url(#magicGradient)"/>
-        </g>
-        <path d="M110 30 L 112 25 L 114 30 L 119 32 L 114 34 L 112 39 L 110 34 L 105 32 Z" fill="white" filter="url(#sparkleGlow)"/>
-        <path d="M40 125 L 42 122 L 44 125 L 47 126 L 44 127 L 42 130 L 40 127 L 37 126 Z" fill="white" opacity="0.8" filter="url(#sparkleGlow)" transform="scale(0.8) translate(10, 10)"/>
-        <circle cx="125" cy="90" r="2" fill="white" opacity="0.7"/>
-        <circle cx="35" cy="60" r="1.5" fill="white" opacity="0.9"/>
-    </svg>
-);
-
-export const OnboardingStreakIllustrationIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
-    <svg viewBox="0 0 160 160" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
-        <defs>
-            <linearGradient id="flame-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#F97316"/>
-                <stop offset="100%" stopColor="#FBBF24"/>
-            </linearGradient>
-            <filter id="flame-glow" x="-50%" y="-50%" width="200%" height="200%">
-                <feGaussianBlur stdDeviation="8" result="coloredBlur"/>
-                <feMerge>
-                    <feMergeNode in="coloredBlur"/>
-                    <feMergeNode in="SourceGraphic"/>
-                </feMerge>
-            </filter>
-        </defs>
-        <path d="M80 20 C40 60, 40 100, 80 140 C120 100, 120 60, 80 20 Z" fill="url(#flame-grad)" filter="url(#flame-glow)"/>
-        <path d="M80 40 C60 70, 60 100, 80 120 C100 100, 100 70, 80 40 Z" fill="white" opacity="0.8"/>
-        <path d="M80 60 C70 80, 70 100, 80 110 C90 100, 90 80, 80 60 Z" fill="url(#flame-grad)" opacity="0.8"/>
-    </svg>
-);
-
-export const OnboardingLeaderboardIllustrationIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
-  <svg viewBox="0 0 160 160" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
-    <defs>
-      <linearGradient id="podium-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%" stopColor="#A855F7" />
-        <stop offset="100%" stopColor="#3B82F6" />
-      </linearGradient>
-      <filter id="podium-glow" x="-50%" y="-50%" width="200%" height="200%">
-        <feGaussianBlur stdDeviation="8" result="blur" />
-        <feMerge>
-          <feMergeNode in="blur" />
-          <feMergeNode in="SourceGraphic" />
-        </feMerge>
-      </filter>
-    </defs>
-    <g filter="url(#podium-glow)">
-      <rect x="60" y="60" width="40" height="60" fill="url(#podium-grad)" />
-      <rect x="25" y="80" width="35" height="40" fill="url(#podium-grad)" opacity="0.7" />
-      <rect x="100" y="90" width="35" height="30" fill="url(#podium-grad)" opacity="0.7" />
-    </g>
-  </svg>
-);
-
-export const NewCompanyLogoIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
-    <svg viewBox="0 0 556 350" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
-        <path fill="#FA4616" d="M201.721 117.811c-14.791 0-24.987 6.49-32.703 13.829 0 0-3.116 2.953-3.076 3.043l32.405 32.405 32.4-32.405c-6.136-8.447-17.704-16.872-29.026-16.872Zm80.009.004c-14.791 0-24.987 6.49-32.704 13.83 0 0-2.845 2.873-2.975 3.042l-40.054 40.06 32.355 32.354 72.403-72.414c-6.136-8.447-17.698-16.872-29.025-16.872Zm80.245-.004c-14.791 0-24.988 6.49-32.704 13.829 0 0-2.963 2.897-3.076 3.043l-80.125 80.136 8.481 8.481c13.121 13.121 34.599 13.121 47.72 0l88.628-88.617H391c-6.136-8.447-17.699-16.872-29.025-16.872Z"/>
     </svg>
 );
 

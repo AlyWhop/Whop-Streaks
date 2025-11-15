@@ -66,7 +66,7 @@ const PodiumItem: React.FC<{ user: LeaderboardEntry; style: React.CSSProperties 
 const UserCard: React.FC<{ user: LeaderboardEntry; style: React.CSSProperties }> = ({ user, style }) => {
   return (
     <div
-      className="flex items-center p-3 rounded-2xl bg-slate-800/50 backdrop-blur-lg border border-slate-700/80 shadow-lg shadow-black/20 opacity-0 animate-rise-up"
+      className="flex items-center p-3 rounded-2xl bg-slate-800/50 backdrop-blur-lg border border-slate-700/80 shadow-lg shadow-black/20 opacity-0 animate-rise-up transition-all duration-300 hover:bg-slate-800/80 hover:border-slate-600 hover:shadow-purple-500/10 hover:-translate-y-1"
       style={style}
     >
       <div className="w-8 h-8 flex items-center justify-center rounded-full bg-slate-700 font-bold text-base text-white/90">
@@ -87,7 +87,7 @@ const UserCard: React.FC<{ user: LeaderboardEntry; style: React.CSSProperties }>
 const YourRankCard: React.FC<{ user: LeaderboardEntry; style: React.CSSProperties }> = ({ user, style }) => {
   return (
     <div 
-        className="flex items-center p-3 mt-6 rounded-2xl bg-gradient-to-r from-purple-600/30 to-sky-600/30 backdrop-blur-lg border-2 border-purple-400 opacity-0 animate-rise-up shadow-2xl shadow-purple-500/20"
+        className="flex items-center p-3 mt-6 rounded-2xl bg-gradient-to-r from-purple-600/30 to-sky-600/30 backdrop-blur-lg border-2 border-purple-400 opacity-0 animate-rise-up shadow-2xl shadow-purple-500/20 transition-all duration-300 hover:shadow-purple-500/40 hover:-translate-y-1 hover:brightness-110"
         style={style}
     >
       <div className="w-8 h-8 flex items-center justify-center rounded-full bg-purple-500 font-bold text-base text-white">
@@ -106,82 +106,4 @@ const YourRankCard: React.FC<{ user: LeaderboardEntry; style: React.CSSPropertie
 };
 
 
-export const LeaderboardView: React.FC<LeaderboardViewProps> = ({ userProfile }) => {
-  const [leaderboardData, setLeaderboardData] = useState<LeaderboardEntry[]>([]);
-  const [currentUserRank, setCurrentUserRank] = useState<LeaderboardEntry | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchLeaderboardData = async () => {
-      setIsLoading(true);
-      try {
-        const [boardData, rankData] = await Promise.all([
-          getLeaderboard(),
-          getCurrentUserRank(userProfile),
-        ]);
-        setLeaderboardData(boardData);
-        setCurrentUserRank(rankData);
-      } catch (error) {
-        console.error("Failed to fetch leaderboard data:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    fetchLeaderboardData();
-  }, [userProfile]);
-
-  const topThree = leaderboardData.slice(0, 3);
-  const restOfList = leaderboardData.slice(3);
-
-  const podiumOrder = [
-    topThree.find(u => u.rank === 2),
-    topThree.find(u => u.rank === 1),
-    topThree.find(u => u.rank === 3),
-  ].filter(Boolean) as LeaderboardEntry[];
-
-  return (
-    <div className="px-4 pb-8">
-      <h2 className="text-3xl font-black text-white/90 tracking-wider text-center mb-6 text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-sky-400" style={{ textShadow: '0 2px 10px var(--glow-purple)' }}>
-        Top Streakers
-      </h2>
-      
-      {isLoading ? (
-        <div className="flex flex-col items-center justify-center pt-10 text-white/70">
-          <LoaderIcon className="w-8 h-8 animate-spin mb-4" />
-          <p>Summoning the Champions...</p>
-        </div>
-      ) : (
-        <>
-          {/* Podium */}
-          {podiumOrder.length > 0 && (
-            <div className="flex justify-around items-end mb-8 h-48">
-              {podiumOrder.map((user, index) => (
-                <PodiumItem 
-                  key={user.rank} 
-                  user={user} 
-                  style={{ animationDelay: `${100 + index * 150}ms`}} 
-                />
-              ))}
-            </div>
-          )}
-
-          {/* Rest of the list */}
-          <div className="space-y-3">
-            {restOfList.map((user, index) => (
-              <UserCard 
-                key={user.rank} 
-                user={user} 
-                style={{ animationDelay: `${400 + index * 100}ms` }} 
-              />
-            ))}
-          </div>
-
-          {/* Current User's Rank */}
-          {currentUserRank && (
-              <YourRankCard user={currentUserRank} style={{ animationDelay: '800ms' }} />
-          )}
-        </>
-      )}
-    </div>
-  );
-};
+export const LeaderboardView: React.FC<LeaderboardViewProps

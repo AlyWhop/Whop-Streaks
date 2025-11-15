@@ -106,4 +106,82 @@ const YourRankCard: React.FC<{ user: LeaderboardEntry; style: React.CSSPropertie
 };
 
 
-export const LeaderboardView: React.FC<LeaderboardViewProps
+export const LeaderboardView: React.FC<LeaderboardViewProps> = ({ userProfile }) => {
+  const [leaderboardData, setLeaderboardData] = useState<LeaderboardEntry[]>([]);
+  const [currentUserRank, setCurrentUserRank] = useState<LeaderboardEntry | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchLeaderboardData = async () => {
+      setIsLoading(true);
+      try {
+        const [boardData, rankData] = await Promise.all([
+          getLeaderboard(),
+          getCurrentUserRank(userProfile),
+        ]);
+        setLeaderboardData(boardData);
+        setCurrentUserRank(rankData);
+      } catch (error) {
+        console.error("Failed to fetch leaderboard data:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchLeaderboardData();
+  }, [userProfile]);
+
+  const topThree = leaderboardData.slice(0, 3);
+  const restOfList = leaderboardData.slice(3);
+
+  const podiumOrder = [
+    topThree.find(u => u.rank === 2),
+    topThree.find(u => u.rank === 1),
+    topThree.find(u => u.rank === 3),
+  ].filter(Boolean) as LeaderboardEntry[];
+
+  return (
+    <div className="px-4 pb-8">
+      <h2 className="text-3xl font-black text-white/90 tracking-wider text-center mb-6 text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-sky-400" style={{ textShadow: '0 2px 10px var(--glow-purple)' }}>
+        Top Streakers
+      </h2>
+      
+      {isLoading ? (
+        <div className="flex flex-col items-center justify-center pt-10 text-white/70">
+          <LoaderIcon className="w-8 h-8 animate-spin mb-4" />
+          <p>Summoning the Champions...</p>
+        </div>
+      ) : (
+        <>
+          {/* Podium */}
+          {podiumOrder.length > 0 && (
+            <div className="flex justify-around items-end mb-8 h-48">
+              {podiumOrder.map((user, index) => (
+                <PodiumItem 
+                  key={user.rank} 
+                  user={user} 
+                  style={{ animationDelay: `${100 + index * 150}ms`}} 
+                />
+              ))}
+            </div>
+          )}
+
+          {/* Rest of the list */}
+          <div className="space-y-3">
+            {restOfList.map((user, index) => (
+              <UserCard 
+                key={user.rank} 
+                user={user} 
+                style={{ animationDelay: `${400 + index * 100}ms` }} 
+              />
+            ))}
+          </div>
+
+          {/* Current User's Rank */}
+          {currentUserRank && (
+              <YourRankCard user={currentUserRank} style={{ animationDelay: '800ms' }} />
+          )}
+        </>
+      )}
+    </div>
+  );
+};
